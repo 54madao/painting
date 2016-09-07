@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style type="text/css">
+	#myCanvas{
+		width: 1000px;
+		height: 700px;
+	}
+</style>
+</head>
+<body>
+	<canvas id="myCanvas" resize></canvas>
+	<img id="display">	
+	<!-- <img id='1' src="img/1.jpg" crossOrigin="Anonymous"></img> -->
+</body>
+
+<!-- Load the library -->
+<script type="text/javascript" src="bower_components/paper/dist/paper-full.js"></script>
+<!-- <script type="text/javascript" src="bower_components/file-saver/FileSaver.js"></script> -->
+<!-- <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script> -->
+
+
+
+<!-- Self-Defined JavaScript -->
+<script type="text/javascript" src="bin/app.bundle.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+	// var canvas = document.getElementById('myCanvas');
+	// // Create an empty project and a view for the canvas:
+	// paper.setup(canvas);
+
+
+
+	// var img = new Image();
+	// img.setAttribute('crossOrigin', 'anonymous');
+	// img.src = 'http://assets.paperjs.org/images/marilyn.jpg';
+	// var raster = new paper.Raster(img);
+
+	// // Move the raster to the center of the view
+	// raster.position = paper.view.center;
+
+	// // Scale the raster by 50%
+	// raster.scale(0.5);
+
+	// // var path = new paper.Path();
+	// // path.strokeColor = 'black';
+	// // var start = new paper.Point(100, 100);
+	// // path.moveTo(start);
+	// // path.lineTo(start.add([ 200, -50 ]));
+
+
+	// var path = new paper.Path();
+	// path.strokeColor = 'black';
+	// var start = new paper.Point(400, 300);
+	// path.moveTo(start);
+	// path.lineTo(start.add([ 200, -50 ]));
+	// path.rasterize();
+	// path.remove();
+	// // var tempImg = paper.project.layers[0];
+	// // console.log(tempImg);
+	// // var data = tempImg.toDataURL();
+	// // tempImg.remove();
+	// // // paper.view.draw();
+	// // // var data = raster.toDataURL();
+	// // // console.log(raster);
+	// // display = document.getElementById('display');
+	// // display.src = data;
+	// // console.log(raster.loaded + "3");
+	// // console.log(data);
+	// paper.view.draw();
+	// // while(!raster.loaded);
+	// raster.onLoad = function(){
+	// 	console.log(paper.project.layers);
+	// 	console.log(paper.project.activeLayer);
+	// 	var tempImg = paper.project.layers[0].rasterize();
+	// 	var data = tempImg.toDataURL();
+	// 	tempImg.remove();
+	// 	console.log(data);
+	// 	display = document.getElementById('display');
+	// 	display.src = data;
+	// 	canvas.toBlob(function(blob) {
+	// 		saveAs(blob, 'export.png');
+	// 	});
+	// }
+</script>
+</html>
