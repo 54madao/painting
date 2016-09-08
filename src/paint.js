@@ -1,6 +1,7 @@
 import "babel-polyfill";
 import $ from 'jquery';
 // require('paper/dist/paper-full');
+import ToolBar from './toolbar';
 
 class Paint{
 
@@ -13,6 +14,22 @@ class Paint{
 		// path.moveTo(start);
 		// path.lineTo(start.add([ 200, -50 ]));
 		// paper.view.draw();
+		// var tool = new paper.Tool();
+		// var path;
+
+		// // Define a mousedown and mousedrag handler
+		// tool.onMouseDown = function(event) {
+		// 	path = new paper.Path();
+		// 	path.strokeColor = 'black';
+		// 	path.add(event.point);
+		// }
+
+		// tool.onMouseDrag = function(event) {
+		// 	path.add(event.point);
+		// }
+
+		this._toolbar = new ToolBar($('.toolsContainer'));
+		console.log(this._toolbar.tools);
 	}
 
 }

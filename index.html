@@ -6,13 +6,21 @@
 	#myCanvas{
 		width: 1000px;
 		height: 700px;
+		border-style: solid; 
 	}
 </style>
 </head>
 <body>
 	<canvas id="myCanvas" resize></canvas>
-	<img id="display">	
+	<!-- <img id="display">	 -->
 	<!-- <img id='1' src="img/1.jpg" crossOrigin="Anonymous"></img> -->
+	<div class="toolsContainer toolbarSection">
+		<a class="tool_Test tool" data-name="Select" title="Select" href="#">Select</a>
+		<a class="tool_Test tool" data-name="Pen" title="Pen" href="#">Pen</a>
+		<a class="tool_Test tool" data-name="Shape" title="Shape" href="#">Shape</a>
+		<a class="tool_Test tool" data-name="Text" title="Text" href="#">Text</a>
+		<!-- <a class="tool_Test tool" data-name="Geo" title="Geo" href="#">Red</a> -->
+	</div>
 </body>
 
 <!-- Load the library -->

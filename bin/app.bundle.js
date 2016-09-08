@@ -52,27 +52,42 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
+	var _toolbar = __webpack_require__(299);
+
+	var _toolbar2 = _interopRequireDefault(_toolbar);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 	// require('paper/dist/paper-full');
+
 
 	var Paint = function Paint(canvas) {
 		_classCallCheck(this, Paint);
 
-		console.log(canvas[0]);
-		var canvas = document.getElementById('myCanvas');
+		paper.setup(canvas[0]);
+		// var path = new paper.Path();
+		// path.strokeColor = 'black';
+		// var start = new paper.Point(100, 100);
+		// path.moveTo(start);
+		// path.lineTo(start.add([ 200, -50 ]));
+		// paper.view.draw();
+		// var tool = new paper.Tool();
+		// var path;
 
-		console.log(canvas);
+		// // Define a mousedown and mousedrag handler
+		// tool.onMouseDown = function(event) {
+		// 	path = new paper.Path();
+		// 	path.strokeColor = 'black';
+		// 	path.add(event.point);
+		// }
 
-		paper.setup(canvas);
-		var path = new paper.Path();
-		path.strokeColor = 'black';
-		var start = new paper.Point(100, 100);
-		path.moveTo(start);
-		path.lineTo(start.add([200, -50]));
-		paper.view.draw();
+		// tool.onMouseDrag = function(event) {
+		// 	path.add(event.point);
+		// }
+
+		this._toolbar = new _toolbar2.default((0, _jquery2.default)('.toolsContainer'));
+		console.log(this._toolbar.tools);
 	};
 
 	new Paint((0, _jquery2.default)("#myCanvas"));
@@ -18285,6 +18300,129 @@
 	return jQuery;
 	} );
 
+
+/***/ },
+/* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _jquery = __webpack_require__(298);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _pen = __webpack_require__(300);
+
+	var _pen2 = _interopRequireDefault(_pen);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ToolBar = function () {
+		function ToolBar(jObject) {
+			var _this = this;
+
+			_classCallCheck(this, ToolBar);
+
+			this._jObject = jObject;
+			this._selected = null;
+
+			//set toolbar
+			this._tools = new Map();
+			this._tools.set('Pen', new _pen2.default());
+			this._tools.set('Geo', new _pen2.default('red'));
+			this._jObject.children('a').each(function (index, element) {
+				// let name = $(element).attr('data-name');
+				// this._tools.set(name, new Pen());
+				(0, _jquery2.default)(element).on('click', function (event) {
+					return _this.select(event);
+				});
+			});
+		}
+
+		_createClass(ToolBar, [{
+			key: 'select',
+			value: function select(event) {
+				var name = (0, _jquery2.default)(event.currentTarget).attr('data-name');
+				console.log(name);
+				this._selected = this._tools.get(name);
+				console.log(this._selected);
+				this._selected._tool.activate();
+			}
+		}, {
+			key: 'tools',
+			get: function get() {
+				return this._tools;
+			}
+		}]);
+
+		return ToolBar;
+	}();
+
+	exports.default = ToolBar;
+
+/***/ },
+/* 300 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Pen = function () {
+		function Pen() {
+			var _this = this;
+
+			var color = arguments.length <= 0 || arguments[0] === undefined ? 'black' : arguments[0];
+
+			_classCallCheck(this, Pen);
+
+			this._tool = new paper.Tool();
+
+			this._tool.onMouseDown = function (event) {
+				return _this.onMouseDown(event);
+			};
+
+			this._tool.onMouseDrag = function (event) {
+				_this._path.add(event.point);
+			};
+
+			this._path = null;
+			this._color = color;
+		}
+
+		_createClass(Pen, [{
+			key: 'onMouseDown',
+			value: function onMouseDown(event) {
+				this._path = new paper.Path();
+				console.log(this);
+				this._path.strokeColor = this._color;
+				this._path.add(event.point);
+			}
+		}, {
+			key: 'tool',
+			get: function get() {
+				return this._tool;
+			}
+		}]);
+
+		return Pen;
+	}();
+
+	exports.default = Pen;
 
 /***/ }
 /******/ ]);
