@@ -85,11 +85,13 @@
 		// tool.onMouseDrag = function(event) {
 		// 	path.add(event.point);
 		// }
-
+		console.log(_toolbar2.default.TEST);
 		this._toolbar = new _toolbar2.default((0, _jquery2.default)('.toolsContainer'));
 		console.log(this._toolbar.tools);
+		console.log(_toolbar2.default.TEST);
 	};
 
+	console.log(_toolbar2.default.TEST);
 	new Paint((0, _jquery2.default)("#myCanvas"));
 
 /***/ },
@@ -18321,6 +18323,18 @@
 
 	var _pen2 = _interopRequireDefault(_pen);
 
+	var _Shape = __webpack_require__(301);
+
+	var _Shape2 = _interopRequireDefault(_Shape);
+
+	var _Text = __webpack_require__(302);
+
+	var _Text2 = _interopRequireDefault(_Text);
+
+	var _Select = __webpack_require__(303);
+
+	var _Select2 = _interopRequireDefault(_Select);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18336,11 +18350,23 @@
 
 			//set toolbar
 			this._tools = new Map();
-			this._tools.set('Pen', new _pen2.default());
-			this._tools.set('Geo', new _pen2.default('red'));
+			// this._tools.set('Pen', new Pen());
+			// this._tools.set('Geo', new Pen('red'));
 			this._jObject.children('a').each(function (index, element) {
-				// let name = $(element).attr('data-name');
-				// this._tools.set(name, new Pen());
+				var name = (0, _jquery2.default)(element).attr('data-name');
+				switch (name) {
+					case "Select":
+						_this._tools.set(name, new _Select2.default());
+						break;
+					case "Pen":
+						_this._tools.set(name, new _pen2.default());
+						break;
+					case "Shape":
+						_this._tools.set(name, new _Shape2.default());
+						break;
+					case "Shape":
+						_this._tools.set(name, new _Shape2.default());
+				}
 				(0, _jquery2.default)(element).on('click', function (event) {
 					return _this.select(event);
 				});
@@ -18351,9 +18377,7 @@
 			key: 'select',
 			value: function select(event) {
 				var name = (0, _jquery2.default)(event.currentTarget).attr('data-name');
-				console.log(name);
 				this._selected = this._tools.get(name);
-				console.log(this._selected);
 				this._selected._tool.activate();
 			}
 		}, {
@@ -18367,6 +18391,8 @@
 	}();
 
 	exports.default = ToolBar;
+
+	ToolBar.TEST = "TEST!!!";
 
 /***/ },
 /* 300 */
@@ -18386,8 +18412,6 @@
 		function Pen() {
 			var _this = this;
 
-			var color = arguments.length <= 0 || arguments[0] === undefined ? 'black' : arguments[0];
-
 			_classCallCheck(this, Pen);
 
 			this._tool = new paper.Tool();
@@ -18401,14 +18425,13 @@
 			};
 
 			this._path = null;
-			this._color = color;
+			this._color = 'black';
 		}
 
 		_createClass(Pen, [{
 			key: 'onMouseDown',
 			value: function onMouseDown(event) {
 				this._path = new paper.Path();
-				console.log(this);
 				this._path.strokeColor = this._color;
 				this._path.add(event.point);
 			}
@@ -18417,12 +18440,203 @@
 			get: function get() {
 				return this._tool;
 			}
+		}, {
+			key: 'color',
+			get: function get() {
+				return this._color;
+			},
+			set: function set(color) {
+				this._color = color;
+			}
 		}]);
 
 		return Pen;
 	}();
 
 	exports.default = Pen;
+
+/***/ },
+/* 301 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Shape = function () {
+		function Shape() {
+			var _this = this;
+
+			_classCallCheck(this, Shape);
+
+			this._tool = new paper.Tool();
+
+			this._tool.onMouseDown = function (event) {
+				return _this.onMouseDown(event);
+			};
+
+			this._tool.onMouseDrag = function (event) {
+				_this._path.add(event.point);
+			};
+
+			this._path = null;
+			this._color = 'black';
+		}
+
+		_createClass(Shape, [{
+			key: 'onMouseDown',
+			value: function onMouseDown(event) {
+				this._path = new paper.Path();
+				this._path.strokeColor = this._color;
+				this._path.add(event.point);
+			}
+		}, {
+			key: 'tool',
+			get: function get() {
+				return this._tool;
+			}
+		}, {
+			key: 'color',
+			get: function get() {
+				return this._color;
+			},
+			set: function set(color) {
+				this._color = color;
+			}
+		}]);
+
+		return Shape;
+	}();
+
+	exports.default = Shape;
+
+/***/ },
+/* 302 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Text = function () {
+		function Text() {
+			var _this = this;
+
+			_classCallCheck(this, Text);
+
+			this._tool = new paper.Tool();
+
+			this._tool.onMouseDown = function (event) {
+				return _this.onMouseDown(event);
+			};
+
+			this._tool.onMouseDrag = function (event) {
+				_this._path.add(event.point);
+			};
+
+			this._path = null;
+			this._color = 'black';
+		}
+
+		_createClass(Text, [{
+			key: 'onMouseDown',
+			value: function onMouseDown(event) {
+				this._path = new paper.Path();
+				this._path.strokeColor = this._color;
+				this._path.add(event.point);
+			}
+		}, {
+			key: 'tool',
+			get: function get() {
+				return this._tool;
+			}
+		}, {
+			key: 'color',
+			get: function get() {
+				return this._color;
+			},
+			set: function set(color) {
+				this._color = color;
+			}
+		}]);
+
+		return Text;
+	}();
+
+	exports.default = Text;
+
+/***/ },
+/* 303 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Select = function () {
+		function Select() {
+			var _this = this;
+
+			_classCallCheck(this, Select);
+
+			this._tool = new paper.Tool();
+
+			this._tool.onMouseDown = function (event) {
+				return _this.onMouseDown(event);
+			};
+
+			this._tool.onMouseDrag = function (event) {
+				_this._path.add(event.point);
+			};
+
+			this._path = null;
+			this._color = 'black';
+		}
+
+		_createClass(Select, [{
+			key: 'onMouseDown',
+			value: function onMouseDown(event) {
+				this._path = new paper.Path();
+				this._path.strokeColor = this._color;
+				this._path.add(event.point);
+			}
+		}, {
+			key: 'tool',
+			get: function get() {
+				return this._tool;
+			}
+		}, {
+			key: 'color',
+			get: function get() {
+				return this._color;
+			},
+			set: function set(color) {
+				this._color = color;
+			}
+		}]);
+
+		return Select;
+	}();
+
+	exports.default = Select;
 
 /***/ }
 /******/ ]);

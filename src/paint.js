@@ -27,11 +27,8 @@ class Paint{
 		// tool.onMouseDrag = function(event) {
 		// 	path.add(event.point);
 		// }
-
 		this._toolbar = new ToolBar($('.toolsContainer'));
-		console.log(this._toolbar.tools);
 	}
 
 }
-
 new Paint($("#myCanvas"));
