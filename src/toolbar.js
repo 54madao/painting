@@ -1,8 +1,8 @@
 import $ from 'jquery';
 import Pen from './tools/pen';
-import Shape from './tools/Shape';
-import Text from './tools/Text';
-import Select from './tools/Select';
+import Shape from './tools/shape';
+import Text from './tools/text';
+import Select from './tools/select';
 
 export default class ToolBar{
 
@@ -26,8 +26,8 @@ export default class ToolBar{
 				case "Shape":
 					this._tools.set(name, new Shape());
 					break;
-				case "Shape":
-					this._tools.set(name, new Shape());
+				case "Text":
+					this._tools.set(name, new Text());
 			}		
 			$(element).on('click', (event) => this.select(event));
 		})	
@@ -37,6 +37,7 @@ export default class ToolBar{
 	select(event){
 		let name = $(event.currentTarget).attr('data-name');
 		this._selected = this._tools.get(name);
+		console.log(this._selected);
 		this._selected._tool.activate();
 	}
 

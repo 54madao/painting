@@ -85,13 +85,9 @@
 		// tool.onMouseDrag = function(event) {
 		// 	path.add(event.point);
 		// }
-		console.log(_toolbar2.default.TEST);
 		this._toolbar = new _toolbar2.default((0, _jquery2.default)('.toolsContainer'));
-		console.log(this._toolbar.tools);
-		console.log(_toolbar2.default.TEST);
 	};
 
-	console.log(_toolbar2.default.TEST);
 	new Paint((0, _jquery2.default)("#myCanvas"));
 
 /***/ },
@@ -18323,17 +18319,17 @@
 
 	var _pen2 = _interopRequireDefault(_pen);
 
-	var _Shape = __webpack_require__(301);
+	var _shape = __webpack_require__(302);
 
-	var _Shape2 = _interopRequireDefault(_Shape);
+	var _shape2 = _interopRequireDefault(_shape);
 
-	var _Text = __webpack_require__(302);
+	var _text = __webpack_require__(303);
 
-	var _Text2 = _interopRequireDefault(_Text);
+	var _text2 = _interopRequireDefault(_text);
 
-	var _Select = __webpack_require__(303);
+	var _select = __webpack_require__(304);
 
-	var _Select2 = _interopRequireDefault(_Select);
+	var _select2 = _interopRequireDefault(_select);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -18356,16 +18352,16 @@
 				var name = (0, _jquery2.default)(element).attr('data-name');
 				switch (name) {
 					case "Select":
-						_this._tools.set(name, new _Select2.default());
+						_this._tools.set(name, new _select2.default());
 						break;
 					case "Pen":
 						_this._tools.set(name, new _pen2.default());
 						break;
 					case "Shape":
-						_this._tools.set(name, new _Shape2.default());
+						_this._tools.set(name, new _shape2.default());
 						break;
-					case "Shape":
-						_this._tools.set(name, new _Shape2.default());
+					case "Text":
+						_this._tools.set(name, new _text2.default());
 				}
 				(0, _jquery2.default)(element).on('click', function (event) {
 					return _this.select(event);
@@ -18378,6 +18374,7 @@
 			value: function select(event) {
 				var name = (0, _jquery2.default)(event.currentTarget).attr('data-name');
 				this._selected = this._tools.get(name);
+				console.log(this._selected);
 				this._selected._tool.activate();
 			}
 		}, {
@@ -18392,10 +18389,115 @@
 
 	exports.default = ToolBar;
 
-	ToolBar.TEST = "TEST!!!";
-
 /***/ },
 /* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _style = __webpack_require__(301);
+
+	var _style2 = _interopRequireDefault(_style);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Pen = function () {
+		function Pen() {
+			var _this = this;
+
+			_classCallCheck(this, Pen);
+
+			this._tool = new paper.Tool();
+			this._tool.onMouseDown = function (event) {
+				return _this.onMouseDown(event);
+			};
+			this._tool.onMouseDrag = function (event) {
+				_this._path.add(event.point);
+			};
+
+			// this._path = null;
+			// this._color = 'black';
+
+			this._style = new _style2.default();
+		}
+
+		_createClass(Pen, [{
+			key: 'onMouseDown',
+			value: function onMouseDown(event) {
+				this._path = new paper.Path();
+				// this._path.strokeColor = this._color;
+				this._path.strokeColor = _style2.default.frontColor;
+				this._path.strokeWidth = this._style.strokeWidth;
+				this._path.dashArray = this._style.dashArray;
+				this._path.shadowBlur = this._style.shadowBlur;
+				this._path.shadowOffset = this._style.shadowOffset;
+				this._path.visible = this._style.visible;
+				this._path.blendMode = this._style.blendMode;
+				this._path.opacity = this._style.opacity;
+				this._path.add(event.point);
+			}
+		}, {
+			key: 'tool',
+			get: function get() {
+				return this._tool;
+			}
+		}, {
+			key: 'strokeWidth',
+
+
+			// get color () {return this._color};
+			// set color (color) {this._color = color};
+
+			set: function set(width) {
+				this._style.strokeWidth = width;
+			}
+		}, {
+			key: 'dashArray',
+			set: function set(array) {
+				this._style.dashArray = array;
+			}
+		}, {
+			key: 'shadowBlur',
+			set: function set(num) {
+				this._style.shadowBlur = num;
+			}
+		}, {
+			key: 'shadowOffset',
+			set: function set(num) {
+				this._style.shadowOffset = num;
+			}
+		}, {
+			key: 'visible',
+			set: function set(vis) {
+				this._style.visible = vis;
+			}
+		}, {
+			key: 'blendMode',
+			set: function set(mode) {
+				this._style.blendMode = mode;
+			}
+		}, {
+			key: 'opacity',
+			set: function set(num) {
+				this._style.opacity = num;
+			}
+		}]);
+
+		return Pen;
+	}();
+
+	exports.default = Pen;
+
+/***/ },
+/* 301 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -18408,55 +18510,141 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var Pen = function () {
-		function Pen() {
-			var _this = this;
+	var Style = function () {
+		function Style() {
+			_classCallCheck(this, Style);
 
-			_classCallCheck(this, Pen);
+			//Stroke Style
+			// this.strokeColor = 'black';
+			this._strokeWidth = 1;
+			// this._strokeCap = 'butt'; //'round', 'square', 'butt'
+			// this._stokeJoin = 'miter'; //'miter', 'round', 'bevel'
+			// this._dashOffset = 0;
+			this._dashArray = [];
 
-			this._tool = new paper.Tool();
+			//Fill Style
+			//this._fillColor = 'black';
 
-			this._tool.onMouseDown = function (event) {
-				return _this.onMouseDown(event);
-			};
+			//Shadow Style
+			//this._shadowColor = 'black';
+			this._shadowBlur = 0;
+			this._shadowOffset = 0;
 
-			this._tool.onMouseDrag = function (event) {
-				_this._path.add(event.point);
-			};
+			//properties
+			this._visible = true;
+			this._blendMode = 'normal'; //'normal', 'multiply', 'screen', 'overlay', 'soft-light', 'hard- light', 'color-dodge', 'color-burn', 'darken', 'lighten', 'difference', 'exclusion', 'hue', 'saturation', 'luminosity', 'color', 'add', 'subtract', 'average', 'pin-light', 'negation', 'source- over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'darker', 'copy', 'xor'
+			this._opacity = 1;
 
-			this._path = null;
-			this._color = 'black';
+			//Character Style
+			this._fontFamily = 'sans-serif';
+			this._fontWeight = 'normal'; //bold
+			this._fontSize = 20;
+			// this._leading = 12;
+
+			//Paragraph Style
+			this._justification = 'left'; //'left', 'right', 'center'
 		}
 
-		_createClass(Pen, [{
-			key: 'onMouseDown',
-			value: function onMouseDown(event) {
-				this._path = new paper.Path();
-				this._path.strokeColor = this._color;
-				this._path.add(event.point);
-			}
-		}, {
-			key: 'tool',
+		_createClass(Style, [{
+			key: 'strokeWidth',
 			get: function get() {
-				return this._tool;
-			}
-		}, {
-			key: 'color',
-			get: function get() {
-				return this._color;
+				return this._strokeWidth;
 			},
-			set: function set(color) {
-				this._color = color;
+			set: function set(width) {
+				this._strokeWidth = width;
+			}
+		}, {
+			key: 'dashArray',
+			get: function get() {
+				return this._dashArray;
+			},
+			set: function set(array) {
+				this._dashArray = array;
+			}
+		}, {
+			key: 'shadowBlur',
+			get: function get() {
+				return this._shadowBlur;
+			},
+			set: function set(num) {
+				this._shadowBlur = num;
+			}
+		}, {
+			key: 'shadowOffset',
+			get: function get() {
+				return this._shadowOffset;
+			},
+			set: function set(num) {
+				this._shadowOffset = num;
+			}
+		}, {
+			key: 'visible',
+			get: function get() {
+				return this._visible;
+			},
+			set: function set(vis) {
+				this._visible = vis;
+			}
+		}, {
+			key: 'blendMode',
+			get: function get() {
+				return this._blendMode;
+			},
+			set: function set(mode) {
+				this._blendMode = mode;
+			}
+		}, {
+			key: 'opacity',
+			get: function get() {
+				return this._opacity;
+			},
+			set: function set(num) {
+				this._opacity = num;
+			}
+		}, {
+			key: 'fontFamily',
+			get: function get() {
+				return this._fontFamily;
+			},
+			set: function set(font) {
+				this._fontFamily = font;
+			}
+		}, {
+			key: 'fontWeight',
+			get: function get() {
+				return this._fontWeight;
+			},
+			set: function set(weight) {
+				this._fontWeight = fontWeight;
+			}
+		}, {
+			key: 'fontSize',
+			get: function get() {
+				return this._fontSize;
+			},
+			set: function set(size) {
+				this._fontSize = fontSize;
+			}
+		}, {
+			key: 'justification',
+			get: function get() {
+				return this._justification;
+			},
+			set: function set(just) {
+				this._justification = just;
 			}
 		}]);
 
-		return Pen;
+		return Style;
 	}();
 
-	exports.default = Pen;
+	exports.default = Style;
+
+	Style.frontColor = 'black';
+	Style.backColor = 'white';
 
 /***/ },
-/* 301 */
+/* 302 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -18517,8 +18705,8 @@
 	exports.default = Shape;
 
 /***/ },
-/* 302 */
-/***/ function(module, exports) {
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -18527,6 +18715,16 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _style = __webpack_require__(301);
+
+	var _style2 = _interopRequireDefault(_style);
+
+	var _jquery = __webpack_require__(298);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -18537,26 +18735,60 @@
 			_classCallCheck(this, Text);
 
 			this._tool = new paper.Tool();
-
 			this._tool.onMouseDown = function (event) {
 				return _this.onMouseDown(event);
 			};
-
-			this._tool.onMouseDrag = function (event) {
-				_this._path.add(event.point);
+			this._tool.onMouseUp = function (event) {
+				return _this.onMouseUp(event);
 			};
 
-			this._path = null;
-			this._color = 'black';
+			this._text = null;
+			this._style = new _style2.default();
 		}
 
 		_createClass(Text, [{
 			key: 'onMouseDown',
 			value: function onMouseDown(event) {
-				this._path = new paper.Path();
-				this._path.strokeColor = this._color;
-				this._path.add(event.point);
+				var _this2 = this;
+
+				this._text = new paper.PointText(event.point);
+				this._text.fontFamily = this._style.fontFamily;
+				this._text.fontWeight = this._style.fontWeight;
+				this._text.fontSize = this._style.fontSize;
+				this._text.justification = this._style.justification;
+				this._text.fillColor = _style2.default.frontColor;
+				this._text.shadowBlur = this._style.shadowBlur;
+				this._text.shadowOffset = this._style.shadowOffset;
+				this._text.visible = this._style.visible;
+				this._text.blendMode = this._style.blendMode;
+				this._text.opacity = this._style.opacity;
+
+				var input = (0, _jquery2.default)('<input id="fakeTextInput" class="fakeTextInput"></input>');
+
+				input.css({
+					position: 'absolute',
+					top: 80,
+					left: 100,
+					zIndex: 10
+				});
+
+				(0, _jquery2.default)('body').append(input);
+				var fakeTextInput = (0, _jquery2.default)('#fakeTextInput');
+				fakeTextInput.focus();
+				fakeTextInput.val(this._text.content);
+
+				fakeTextInput.keyup(function (event) {
+					_this2._text.content = fakeTextInput.val();
+					if (event.keyCode === 13) {
+						// finalizeInput(textItem);
+						(0, _jquery2.default)(event.currentTarget).remove();
+					}
+					paper.project.view.update();
+				});
 			}
+		}, {
+			key: 'onMouseUp',
+			value: function onMouseUp(event) {}
 		}, {
 			key: 'tool',
 			get: function get() {
@@ -18578,7 +18810,7 @@
 	exports.default = Text;
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports) {
 
 	'use strict';
