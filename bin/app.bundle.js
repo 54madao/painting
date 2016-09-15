@@ -56,6 +56,10 @@
 
 	var _toolbar2 = _interopRequireDefault(_toolbar);
 
+	var _menu = __webpack_require__(305);
+
+	var _menu2 = _interopRequireDefault(_menu);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -86,8 +90,14 @@
 		// 	path.add(event.point);
 		// }
 		this._toolbar = new _toolbar2.default((0, _jquery2.default)('.toolsContainer'));
+		this._menu = new _menu2.default((0, _jquery2.default)('.menu'));
 	};
 
+	if (window.File && window.FileReader && window.FileList && window.Blob) {
+		// Great success! All the File APIs are supported.
+	} else {
+		alert('The File APIs are not fully supported in this browser.');
+	}
 	new Paint((0, _jquery2.default)("#myCanvas"));
 
 /***/ },
@@ -18973,6 +18983,152 @@
 	}();
 
 	exports.default = Select;
+
+/***/ },
+/* 305 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _jquery = __webpack_require__(298);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Menu = function () {
+		function Menu(jObject) {
+			var _this = this;
+
+			_classCallCheck(this, Menu);
+
+			this._jObject = jObject;
+
+			(0, _jquery2.default)('#imageUpload').change(function (event) {
+				return _this.uploadImage(event);
+			});
+			(0, _jquery2.default)('#myCanvas').on('dragover', function (event) {
+				return _this.handleDragOver(event);
+			});
+			(0, _jquery2.default)('#myCanvas').on('drop', function (event) {
+				return _this.handleDrop(event);
+			});
+			(0, _jquery2.default)('#exportImage').on('click', function (event) {
+				return _this.exportImage(event);
+			});
+		}
+
+		_createClass(Menu, [{
+			key: 'uploadImage',
+			value: function uploadImage(event) {
+				var images = event.target.files; // FileList object
+
+				var _iteratorNormalCompletion = true;
+				var _didIteratorError = false;
+				var _iteratorError = undefined;
+
+				try {
+					for (var _iterator = images[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+						var f = _step.value;
+
+						var reader = new FileReader();
+						reader.onload = function (event) {
+							var raster = new paper.Raster({
+								source: event.target.result,
+								position: paper.view.center
+							});
+						};
+						// Read in the image file as a data URL.
+						reader.readAsDataURL(f);
+					}
+				} catch (err) {
+					_didIteratorError = true;
+					_iteratorError = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion && _iterator.return) {
+							_iterator.return();
+						}
+					} finally {
+						if (_didIteratorError) {
+							throw _iteratorError;
+						}
+					}
+				}
+			}
+		}, {
+			key: 'handleDragOver',
+			value: function handleDragOver(event) {
+				event.stopPropagation();
+				event.preventDefault();
+				event.originalEvent.dataTransfer.dropEffect = 'copy';
+			}
+		}, {
+			key: 'handleDrop',
+			value: function handleDrop(event) {
+				event.stopPropagation();
+				event.preventDefault();
+				var images = event.originalEvent.dataTransfer.files; // FileList object
+
+				var _iteratorNormalCompletion2 = true;
+				var _didIteratorError2 = false;
+				var _iteratorError2 = undefined;
+
+				try {
+					for (var _iterator2 = images[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+						var f = _step2.value;
+
+						var reader = new FileReader();
+						reader.onload = function (event) {
+							var raster = new paper.Raster({
+								source: event.target.result,
+								position: paper.view.center
+							});
+						};
+						// Read in the image file as a data URL.
+						reader.readAsDataURL(f);
+					}
+				} catch (err) {
+					_didIteratorError2 = true;
+					_iteratorError2 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion2 && _iterator2.return) {
+							_iterator2.return();
+						}
+					} finally {
+						if (_didIteratorError2) {
+							throw _iteratorError2;
+						}
+					}
+				}
+			}
+		}, {
+			key: 'exportImage',
+			value: function exportImage(event) {
+				var tempImg = paper.project.layers[0].rasterize();
+				var data = tempImg.toDataURL();
+				tempImg.remove();
+				// display = document.getElementById('display');
+				// display.src = data;
+				(0, _jquery2.default)('#myCanvas')[0].toBlob(function (blob) {
+					saveAs(blob, 'export.png');
+				});
+			}
+		}]);
+
+		return Menu;
+	}();
+
+	exports.default = Menu;
 
 /***/ }
 /******/ ]);

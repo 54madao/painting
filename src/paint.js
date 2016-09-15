@@ -2,6 +2,7 @@ import "babel-polyfill";
 import $ from 'jquery';
 // require('paper/dist/paper-full');
 import ToolBar from './toolbar';
+import Menu from './menu';
 
 class Paint{
 
@@ -28,7 +29,14 @@ class Paint{
 		// 	path.add(event.point);
 		// }
 		this._toolbar = new ToolBar($('.toolsContainer'));
+		this._menu = new Menu($('.menu'));
 	}
 
+}
+
+if (window.File && window.FileReader && window.FileList && window.Blob) {
+  // Great success! All the File APIs are supported.
+} else {
+  alert('The File APIs are not fully supported in this browser.');
 }
 new Paint($("#myCanvas"));
