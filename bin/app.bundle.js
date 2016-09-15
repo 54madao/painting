@@ -18645,7 +18645,7 @@
 
 /***/ },
 /* 302 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -18654,6 +18654,12 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _style = __webpack_require__(301);
+
+	var _style2 = _interopRequireDefault(_style);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -18664,38 +18670,63 @@
 			_classCallCheck(this, Shape);
 
 			this._tool = new paper.Tool();
-
-			this._tool.onMouseDown = function (event) {
-				return _this.onMouseDown(event);
-			};
-
+			// this._tool.onMouseDown = (event) => this.onMouseDown(event);
 			this._tool.onMouseDrag = function (event) {
-				_this._path.add(event.point);
+				return _this.onMouseDrag(event);
 			};
 
 			this._path = null;
-			this._color = 'black';
+			this._type = 'circle';
+			this._shapes = new Map([['circle', this.createCircle], ['rect', this.createRect], ['ellipse', this.createEllipse], ['arc', this.createArc], ['polygon', this.createPolygon], ['star', this.createStar]]);
+			this._style = new _style2.default();
 		}
 
 		_createClass(Shape, [{
-			key: 'onMouseDown',
-			value: function onMouseDown(event) {
-				this._path = new paper.Path();
-				this._path.strokeColor = this._color;
-				this._path.add(event.point);
+			key: 'onMouseDrag',
+			value: function onMouseDrag(event) {
+				this._path = this._shapes.get(this._type)(event);
+				this._path.strokeColor = _style2.default.frontColor;
+				this._path.strokeWidth = this._style.strokeWidth;
+				this._path.dashArray = this._style.dashArray;
+				this._path.shadowBlur = this._style.shadowBlur;
+				this._path.shadowOffset = this._style.shadowOffset;
+				this._path.visible = this._style.visible;
+				this._path.blendMode = this._style.blendMode;
+				this._path.opacity = this._style.opacity;
+				this._path.removeOnDrag();
 			}
+		}, {
+			key: 'createCircle',
+			value: function createCircle(event) {
+				return new paper.Path.Circle({
+					center: event.downPoint,
+					radius: event.downPoint.subtract(event.point).length
+				});
+			}
+		}, {
+			key: 'createRect',
+			value: function createRect() {}
+		}, {
+			key: 'createEllipse',
+			value: function createEllipse() {}
+		}, {
+			key: 'createArc',
+			value: function createArc() {}
+		}, {
+			key: 'createPolygon',
+			value: function createPolygon() {}
+		}, {
+			key: 'createStar',
+			value: function createStar() {}
 		}, {
 			key: 'tool',
 			get: function get() {
 				return this._tool;
 			}
 		}, {
-			key: 'color',
-			get: function get() {
-				return this._color;
-			},
-			set: function set(color) {
-				this._color = color;
+			key: 'type',
+			set: function set(type) {
+				this._type = type;
 			}
 		}]);
 
@@ -18749,19 +18780,39 @@
 		_createClass(Text, [{
 			key: 'onMouseDown',
 			value: function onMouseDown(event) {
-				var _this2 = this;
+				var hitOptions = {
+					fill: true,
+					class: paper.PointText,
+					tolerance: 5
+				};
 
-				this._text = new paper.PointText(event.point);
-				this._text.fontFamily = this._style.fontFamily;
-				this._text.fontWeight = this._style.fontWeight;
-				this._text.fontSize = this._style.fontSize;
-				this._text.justification = this._style.justification;
-				this._text.fillColor = _style2.default.frontColor;
-				this._text.shadowBlur = this._style.shadowBlur;
-				this._text.shadowOffset = this._style.shadowOffset;
-				this._text.visible = this._style.visible;
-				this._text.blendMode = this._style.blendMode;
-				this._text.opacity = this._style.opacity;
+				var hitRes = paper.project.hitTest(event.point, hitOptions);
+				if (hitRes) {
+					this._text = hitRes.item;
+					this._text.selected = true;
+				} else {
+					this._text = new paper.PointText(event.point);
+					this._text.fontFamily = this._style.fontFamily;
+					this._text.fontWeight = this._style.fontWeight;
+					this._text.fontSize = this._style.fontSize;
+					this._text.justification = this._style.justification;
+					this._text.fillColor = _style2.default.frontColor;
+					this._text.shadowBlur = this._style.shadowBlur;
+					this._text.shadowOffset = this._style.shadowOffset;
+					this._text.visible = this._style.visible;
+					this._text.blendMode = this._style.blendMode;
+					this._text.opacity = this._style.opacity;
+					this._text.selected = true;
+				}
+				this.edit();
+			}
+		}, {
+			key: 'onMouseUp',
+			value: function onMouseUp(event) {}
+		}, {
+			key: 'edit',
+			value: function edit() {
+				var _this2 = this;
 
 				var input = (0, _jquery2.default)('<input id="fakeTextInput" class="fakeTextInput"></input>');
 
@@ -18781,26 +18832,71 @@
 					_this2._text.content = fakeTextInput.val();
 					if (event.keyCode === 13) {
 						// finalizeInput(textItem);
+						_this2._text.selected = false;
 						(0, _jquery2.default)(event.currentTarget).remove();
 					}
 					paper.project.view.update();
 				});
 			}
 		}, {
-			key: 'onMouseUp',
-			value: function onMouseUp(event) {}
-		}, {
 			key: 'tool',
 			get: function get() {
 				return this._tool;
 			}
 		}, {
-			key: 'color',
-			get: function get() {
-				return this._color;
-			},
-			set: function set(color) {
-				this._color = color;
+			key: 'strokeWidth',
+			set: function set(width) {
+				this._style.strokeWidth = width;
+			}
+		}, {
+			key: 'dashArray',
+			set: function set(array) {
+				this._style.dashArray = array;
+			}
+		}, {
+			key: 'shadowBlur',
+			set: function set(num) {
+				this._style.shadowBlur = num;
+			}
+		}, {
+			key: 'shadowOffset',
+			set: function set(num) {
+				this._style.shadowOffset = num;
+			}
+		}, {
+			key: 'visible',
+			set: function set(vis) {
+				this._style.visible = vis;
+			}
+		}, {
+			key: 'blendMode',
+			set: function set(mode) {
+				this._style.blendMode = mode;
+			}
+		}, {
+			key: 'opacity',
+			set: function set(num) {
+				this._style.opacity = num;
+			}
+		}, {
+			key: 'fontFamily',
+			set: function set(font) {
+				this._style.fontFamily = font;
+			}
+		}, {
+			key: 'fontWeight',
+			set: function set(weight) {
+				this._style.fontWeight = weight;
+			}
+		}, {
+			key: 'fontSize',
+			set: function set(size) {
+				this._style.fontSize = size;
+			}
+		}, {
+			key: 'justification',
+			set: function set(just) {
+				this._style.justification = just;
 			}
 		}]);
 
@@ -18813,7 +18909,7 @@
 /* 304 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -18830,38 +18926,46 @@
 			_classCallCheck(this, Select);
 
 			this._tool = new paper.Tool();
-
 			this._tool.onMouseDown = function (event) {
 				return _this.onMouseDown(event);
 			};
-
 			this._tool.onMouseDrag = function (event) {
-				_this._path.add(event.point);
+				return _this.onMouseDrag(event);
 			};
-
-			this._path = null;
-			this._color = 'black';
+			this._item = null;
 		}
 
 		_createClass(Select, [{
-			key: 'onMouseDown',
+			key: "onMouseDown",
 			value: function onMouseDown(event) {
-				this._path = new paper.Path();
-				this._path.strokeColor = this._color;
-				this._path.add(event.point);
+				var hitOptions = {
+					segments: true,
+					stroke: true,
+					curves: true,
+					fill: true,
+					guide: false,
+					tolerance: 5
+				};
+				var hitRes = paper.project.hitTest(event.point, hitOptions);
+				if (hitRes) {
+					this._item = hitRes.item;
+					this._item.selected = true;
+				} else if (this._item) {
+					this._item.selected = false;
+					this._item = null;
+				}
 			}
 		}, {
-			key: 'tool',
+			key: "onMouseDrag",
+			value: function onMouseDrag(event) {
+				if (this._item && this._item.selected) {
+					this._item.position = this._item.position.add(event.delta);
+				}
+			}
+		}, {
+			key: "tool",
 			get: function get() {
 				return this._tool;
-			}
-		}, {
-			key: 'color',
-			get: function get() {
-				return this._color;
-			},
-			set: function set(color) {
-				this._color = color;
 			}
 		}]);
 
