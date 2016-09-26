@@ -1,42 +1,59 @@
+'use strict'
+
 import "babel-polyfill";
 import $ from 'jquery';
 // require('paper/dist/paper-full');
 import ToolBar from './toolbar';
 import Menu from './menu';
 
-class Paint{
+export default class Paint{
 
-	constructor(canvas){
+	constructor(elems){
+		if (window.File && window.FileReader && window.FileList && window.Blob) {
+		  // Great success! All the File APIs are supported.
+		} else {
+		  alert('The File APIs are not fully supported in this browser.');
+		}
 
-		paper.setup(canvas[0]);
-		// var path = new paper.Path();
-		// path.strokeColor = 'black';
-		// var start = new paper.Point(100, 100);
-		// path.moveTo(start);
-		// path.lineTo(start.add([ 200, -50 ]));
-		// paper.view.draw();
-		// var tool = new paper.Tool();
-		// var path;
 
-		// // Define a mousedown and mousedrag handler
-		// tool.onMouseDown = function(event) {
-		// 	path = new paper.Path();
-		// 	path.strokeColor = 'black';
-		// 	path.add(event.point);
-		// }
+		paper.setup(elems['canvas'][0]);
+		this._toolbar = new ToolBar(elems);
+		this._menu = new Menu(elems);
 
-		// tool.onMouseDrag = function(event) {
-		// 	path.add(event.point);
-		// }
-		this._toolbar = new ToolBar($('.toolsContainer'));
-		this._menu = new Menu($('.menu'));
+		elems['canvas'].on('dragover', (event) => this.handleDragOver(event));
+		elems['canvas'].on('drop', (event) => this.handleDrop(event));
 	}
 
+
+	handleDragOver(event){
+		event.stopPropagation();
+    	event.preventDefault();
+   		event.originalEvent.dataTransfer.dropEffect = 'copy';
+	}
+
+	handleDrop(event){
+		event.stopPropagation();
+    	event.preventDefault();
+    	let images = event.originalEvent.dataTransfer.files; // FileList object
+
+    	for (let f of images) {
+ 			let reader = new FileReader();
+			reader.onload = (event) => {
+		     	var raster = new paper.Raster({
+					source: event.target.result,
+					position: paper.view.center
+				});
+		    }
+		    // Read in the image file as a data URL.
+		    reader.readAsDataURL(f);
+    	}
+	}
 }
 
-if (window.File && window.FileReader && window.FileList && window.Blob) {
-  // Great success! All the File APIs are supported.
-} else {
-  alert('The File APIs are not fully supported in this browser.');
-}
-new Paint($("#myCanvas"));
+new Paint({
+	'canvas': $("#paintingCanvas"),
+	'toolbar': $('#paintingToolbar'),
+	'menu': $('#paintingMenu')
+});
+
+

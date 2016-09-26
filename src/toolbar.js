@@ -1,3 +1,5 @@
+'use strict'
+
 import $ from 'jquery';
 import Pen from './tools/pen';
 import Shape from './tools/shape';
@@ -6,15 +8,15 @@ import Select from './tools/select';
 
 export default class ToolBar{
 
-	constructor(jObject){
-		this._jObject = jObject;
+	constructor(elems){
+		this._elems = elems;
 		this._selected = null;
 
 		//set toolbar
 		this._tools = new Map();
 		// this._tools.set('Pen', new Pen());
 		// this._tools.set('Geo', new Pen('red'));
-		this._jObject.children('a').each((index, element) => {
+		this._elems['toolbar'].children('div').each((index, element) => {
 			let name = $(element).attr('data-name');
 			switch(name){
 				case "Select":

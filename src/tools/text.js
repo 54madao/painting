@@ -1,3 +1,5 @@
+'use strict'
+
 import Style from '../style';
 import $ from 'jquery';
 

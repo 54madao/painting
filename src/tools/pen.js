@@ -1,3 +1,5 @@
+'use strict'
+
 import Style from '../style';
 
 export default class Pen{

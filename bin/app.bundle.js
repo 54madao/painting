@@ -46,6 +46,14 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	// require('paper/dist/paper-full');
+
+
 	__webpack_require__(1);
 
 	var _jquery = __webpack_require__(298);
@@ -63,42 +71,91 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	// require('paper/dist/paper-full');
+
+	var Paint = function () {
+		function Paint(elems) {
+			var _this = this;
+
+			_classCallCheck(this, Paint);
+
+			if (window.File && window.FileReader && window.FileList && window.Blob) {
+				// Great success! All the File APIs are supported.
+			} else {
+				alert('The File APIs are not fully supported in this browser.');
+			}
+
+			paper.setup(elems['canvas'][0]);
+			this._toolbar = new _toolbar2.default(elems);
+			this._menu = new _menu2.default(elems);
+
+			elems['canvas'].on('dragover', function (event) {
+				return _this.handleDragOver(event);
+			});
+			elems['canvas'].on('drop', function (event) {
+				return _this.handleDrop(event);
+			});
+		}
+
+		_createClass(Paint, [{
+			key: 'handleDragOver',
+			value: function handleDragOver(event) {
+				event.stopPropagation();
+				event.preventDefault();
+				event.originalEvent.dataTransfer.dropEffect = 'copy';
+			}
+		}, {
+			key: 'handleDrop',
+			value: function handleDrop(event) {
+				event.stopPropagation();
+				event.preventDefault();
+				var images = event.originalEvent.dataTransfer.files; // FileList object
+
+				var _iteratorNormalCompletion = true;
+				var _didIteratorError = false;
+				var _iteratorError = undefined;
+
+				try {
+					for (var _iterator = images[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+						var f = _step.value;
+
+						var reader = new FileReader();
+						reader.onload = function (event) {
+							var raster = new paper.Raster({
+								source: event.target.result,
+								position: paper.view.center
+							});
+						};
+						// Read in the image file as a data URL.
+						reader.readAsDataURL(f);
+					}
+				} catch (err) {
+					_didIteratorError = true;
+					_iteratorError = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion && _iterator.return) {
+							_iterator.return();
+						}
+					} finally {
+						if (_didIteratorError) {
+							throw _iteratorError;
+						}
+					}
+				}
+			}
+		}]);
+
+		return Paint;
+	}();
+
+	exports.default = Paint;
 
 
-	var Paint = function Paint(canvas) {
-		_classCallCheck(this, Paint);
-
-		paper.setup(canvas[0]);
-		// var path = new paper.Path();
-		// path.strokeColor = 'black';
-		// var start = new paper.Point(100, 100);
-		// path.moveTo(start);
-		// path.lineTo(start.add([ 200, -50 ]));
-		// paper.view.draw();
-		// var tool = new paper.Tool();
-		// var path;
-
-		// // Define a mousedown and mousedrag handler
-		// tool.onMouseDown = function(event) {
-		// 	path = new paper.Path();
-		// 	path.strokeColor = 'black';
-		// 	path.add(event.point);
-		// }
-
-		// tool.onMouseDrag = function(event) {
-		// 	path.add(event.point);
-		// }
-		this._toolbar = new _toolbar2.default((0, _jquery2.default)('.toolsContainer'));
-		this._menu = new _menu2.default((0, _jquery2.default)('.menu'));
-	};
-
-	if (window.File && window.FileReader && window.FileList && window.Blob) {
-		// Great success! All the File APIs are supported.
-	} else {
-		alert('The File APIs are not fully supported in this browser.');
-	}
-	new Paint((0, _jquery2.default)("#myCanvas"));
+	new Paint({
+		'canvas': (0, _jquery2.default)("#paintingCanvas"),
+		'toolbar': (0, _jquery2.default)('#paintingToolbar'),
+		'menu': (0, _jquery2.default)('#paintingMenu')
+	});
 
 /***/ },
 /* 1 */
@@ -18346,19 +18403,19 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var ToolBar = function () {
-		function ToolBar(jObject) {
+		function ToolBar(elems) {
 			var _this = this;
 
 			_classCallCheck(this, ToolBar);
 
-			this._jObject = jObject;
+			this._elems = elems;
 			this._selected = null;
 
 			//set toolbar
 			this._tools = new Map();
 			// this._tools.set('Pen', new Pen());
 			// this._tools.set('Geo', new Pen('red'));
-			this._jObject.children('a').each(function (index, element) {
+			this._elems['toolbar'].children('div').each(function (index, element) {
 				var name = (0, _jquery2.default)(element).attr('data-name');
 				switch (name) {
 					case "Select":
@@ -18919,7 +18976,7 @@
 /* 304 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -18946,7 +19003,7 @@
 		}
 
 		_createClass(Select, [{
-			key: "onMouseDown",
+			key: 'onMouseDown',
 			value: function onMouseDown(event) {
 				var hitOptions = {
 					segments: true,
@@ -18966,14 +19023,14 @@
 				}
 			}
 		}, {
-			key: "onMouseDrag",
+			key: 'onMouseDrag',
 			value: function onMouseDrag(event) {
 				if (this._item && this._item.selected) {
 					this._item.position = this._item.position.add(event.delta);
 				}
 			}
 		}, {
-			key: "tool",
+			key: 'tool',
 			get: function get() {
 				return this._tool;
 			}
@@ -19005,23 +19062,17 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var Menu = function () {
-		function Menu(jObject) {
+		function Menu(elems) {
 			var _this = this;
 
 			_classCallCheck(this, Menu);
 
-			this._jObject = jObject;
+			this._elems = elems;
 
-			(0, _jquery2.default)('#imageUpload').change(function (event) {
+			this._elems['menu'].find('#imageUpload').change(function (event) {
 				return _this.uploadImage(event);
 			});
-			(0, _jquery2.default)('#myCanvas').on('dragover', function (event) {
-				return _this.handleDragOver(event);
-			});
-			(0, _jquery2.default)('#myCanvas').on('drop', function (event) {
-				return _this.handleDrop(event);
-			});
-			(0, _jquery2.default)('#exportImage').on('click', function (event) {
+			this._elems['menu'].find('#exportImage').on('click', function (event) {
 				return _this.exportImage(event);
 			});
 		}
@@ -19065,61 +19116,12 @@
 				}
 			}
 		}, {
-			key: 'handleDragOver',
-			value: function handleDragOver(event) {
-				event.stopPropagation();
-				event.preventDefault();
-				event.originalEvent.dataTransfer.dropEffect = 'copy';
-			}
-		}, {
-			key: 'handleDrop',
-			value: function handleDrop(event) {
-				event.stopPropagation();
-				event.preventDefault();
-				var images = event.originalEvent.dataTransfer.files; // FileList object
-
-				var _iteratorNormalCompletion2 = true;
-				var _didIteratorError2 = false;
-				var _iteratorError2 = undefined;
-
-				try {
-					for (var _iterator2 = images[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-						var f = _step2.value;
-
-						var reader = new FileReader();
-						reader.onload = function (event) {
-							var raster = new paper.Raster({
-								source: event.target.result,
-								position: paper.view.center
-							});
-						};
-						// Read in the image file as a data URL.
-						reader.readAsDataURL(f);
-					}
-				} catch (err) {
-					_didIteratorError2 = true;
-					_iteratorError2 = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion2 && _iterator2.return) {
-							_iterator2.return();
-						}
-					} finally {
-						if (_didIteratorError2) {
-							throw _iteratorError2;
-						}
-					}
-				}
-			}
-		}, {
 			key: 'exportImage',
 			value: function exportImage(event) {
 				var tempImg = paper.project.layers[0].rasterize();
 				var data = tempImg.toDataURL();
 				tempImg.remove();
-				// display = document.getElementById('display');
-				// display.src = data;
-				(0, _jquery2.default)('#myCanvas')[0].toBlob(function (blob) {
+				this._elems['canvas'][0].toBlob(function (blob) {
 					saveAs(blob, 'export.png');
 				});
 			}

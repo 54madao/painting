@@ -1,3 +1,5 @@
+'use strict'
+
 export default class Select{
 	constructor(){
 		this._tool = new paper.Tool();
