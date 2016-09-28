@@ -4,9 +4,10 @@ var bower_dir = __dirname + '/bower_components';
 var npm_dir = __dirname + '/node_modules';
 
 module.exports = {
-    entry: './src/index.js',
+    watch: true,
+    entry: __dirname + '/src/index.js',
     output: {
-        path: './bin',
+        path: __dirname + '/bin',
         filename: 'app.bundle.js',
     },
     plugins: [

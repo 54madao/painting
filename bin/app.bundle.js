@@ -91,12 +91,15 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	// import $ from 'jquery';
 	// import paper from '../node_modules/paper/dist/paper-full.js';
 	// require('paper/dist/paper-full');
 
 
 	__webpack_require__(7);
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
 
 	var _toolbar = __webpack_require__(304);
 
@@ -23713,7 +23716,6 @@
 				var tempImg = paper.project.layers[0].rasterize();
 				var data = tempImg.toDataURL();
 				tempImg.remove();
-				console.log(fileSaver.saveAs);
 				this._elems['canvas'][0].toBlob(function (blob) {
 					fileSaver.saveAs(blob, 'export.png');
 				});
