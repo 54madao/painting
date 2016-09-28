@@ -1,7 +1,7 @@
 'use strict'
 
 import "babel-polyfill";
-import $ from 'jquery';
+// import $ from 'jquery';
 // import paper from '../node_modules/paper/dist/paper-full.js';
 // require('paper/dist/paper-full');
 import ToolBar from './toolbar';

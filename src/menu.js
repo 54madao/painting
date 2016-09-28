@@ -1,5 +1,6 @@
 'use strict'
 // import paper from '../node_modules/paper/dist/paper-full.js';
+// import saveAs from 'file-saver';
 
 export default class Menu{
 	constructor(elems){
@@ -30,7 +31,7 @@ export default class Menu{
 		let data = tempImg.toDataURL();
 		tempImg.remove();
 		this._elems['canvas'][0].toBlob(function(blob) {
-			saveAs(blob, 'export.png');
+			fileSaver.saveAs(blob, 'export.png');
 		});
 	}
 }
