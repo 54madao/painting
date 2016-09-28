@@ -1,6 +1,5 @@
 'use strict'
 
-import $ from 'jquery';
 import Pen from './tools/pen';
 import Shape from './tools/shape';
 import Text from './tools/text';

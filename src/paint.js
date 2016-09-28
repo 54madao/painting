@@ -2,6 +2,7 @@
 
 import "babel-polyfill";
 import $ from 'jquery';
+// import paper from '../node_modules/paper/dist/paper-full.js';
 // require('paper/dist/paper-full');
 import ToolBar from './toolbar';
 import Menu from './menu';
@@ -49,11 +50,5 @@ export default class Paint{
     	}
 	}
 }
-
-new Paint({
-	'canvas': $("#paintingCanvas"),
-	'toolbar': $('#paintingToolbar'),
-	'menu': $('#paintingMenu')
-});
 
 

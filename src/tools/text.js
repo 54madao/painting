@@ -1,7 +1,7 @@
 'use strict'
 
 import Style from '../style';
-import $ from 'jquery';
+// import paper from '../../node_modules/paper/dist/paper-full.js';
 
 export default class Text{
 	constructor(){

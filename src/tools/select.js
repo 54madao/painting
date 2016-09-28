@@ -1,4 +1,5 @@
 'use strict'
+// import paper from '../../node_modules/paper/dist/paper-full.js';
 
 export default class Select{
 	constructor(){

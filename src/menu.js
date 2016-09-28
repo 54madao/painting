@@ -1,6 +1,5 @@
 'use strict'
-
-import $ from 'jquery';
+// import paper from '../node_modules/paper/dist/paper-full.js';
 
 export default class Menu{
 	constructor(elems){

@@ -1,4 +1,11 @@
 'use strict'
+// import '../node_modules/paper/dist/paper-full.js';
+// import paper from '../node_modules/paper/dist/paper-full.js';
+// import 'paper';
+import Paint from './paint';
 
-require("babel-register");
-require('./paint.js');
+new Paint({
+	'canvas': $("#paintingCanvas"),
+	'toolbar': $('#paintingToolbar'),
+	'menu': $('#paintingMenu')
+});
