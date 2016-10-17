@@ -14,14 +14,16 @@ module.exports = {
         new webpack.ProvidePlugin({
             '$': 'jquery',
             'paper': 'paper',
-            'fileSaver': 'fileSaver'
+            'fileSaver': 'fileSaver',
+            // 'peer': 'peer'
         })
     ],
     resolve: {
         alias: {
             'jquery': npm_dir + '/jquery/dist/jquery.min.js',
             "paper": npm_dir + "/paper/dist/paper-full.js",
-            "fileSaver": npm_dir + "/file-saver/FileSaver.js" // added alias for react-dom
+            "fileSaver": npm_dir + "/file-saver/FileSaver.js", // added alias for react-dom
+            // "peer": npm_dir + "/peerjs/dist/peer.js"
         }
     },
     module: {

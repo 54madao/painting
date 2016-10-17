@@ -27,13 +27,13 @@
 	
 	<nav class="nav" id='paintingMenu'>
 		<ul class="menu">
-			<input id="menuTab" type="checkbox" name="menu"/>
-			<li>
+			<input id="menuTab" type="checkbox" name="menu" hidden/>
+			<li class="item">
 				<label class="menuItem" for="menuTab">File</label>
 				<ul class='subMenu'>
 			      	<li>
 			      		<label class="subMenuItem">Import Image
-			      			<input id="imageUpload" type="file" name="files[]" multiple>
+			      			<input id="imageUpload" type="file" name="files[]" multiple hidden>
 			      		</label>
 			      	</li>
 					<li id="exportImage">
@@ -43,12 +43,18 @@
 					</li>
 			    </ul>
 			</li>
-			<li>
+			<li class="item">
 				<label class="menuItem" for="menuTab">Edit</label>
 				<ul class="subMenu" id="fileSubMenu">
 			      <li class="subMenuItem"><a href="#">S3</a></li>
 			      <li class="subMenuItem"><a href="#">S4</a></li>
 				</ul>
+			</li>
+			<li class='rightNav'>
+				<div><input type='text' id='peerId'><button id="connect">Connect</button><div>
+			</li>
+			<li class='rightNav'>
+				<div id='myId'><div>
 			</li>
 		</ul>
 	</nav>
@@ -65,10 +71,11 @@
 <script src="lib/jquery.fileupload.js"></script>
 <script src="lib/jquery.fileupload-process.js"></script>
 <script src="lib/jquery.fileupload-validate.js"></script> -->
+<script type="text/javascript" src="http://cdn.peerjs.com/0.3/peer.js"></script>
+
 
 <!-- Self-Defined JavaScript -->
 <script type="text/javascript" src="bin/app.bundle.js"></script>
-
 <script type="text/javascript">
 
 </script>

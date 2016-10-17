@@ -29,12 +29,13 @@
 	box-sizing: border-box;
 }
 
-.nav .menu input{
-	display: none;
+.nav .menu>li.rightNav{
+	float: right;
+	padding: 10px;
 }
 
-.nav .menu>li.active,
-.nav .menu>li:hover {
+.nav .menu>li.item.active,
+.nav .menu>li.item:hover {
 	background-color: #444;
 	color: #fff;
 }

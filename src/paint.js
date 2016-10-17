@@ -15,7 +15,7 @@ export default class Paint{
 		} else {
 		  alert('The File APIs are not fully supported in this browser.');
 		}
-
+		
 
 		paper.setup(elems['canvas'][0]);
 		this._toolbar = new ToolBar(elems);
