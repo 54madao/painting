@@ -33,6 +33,7 @@
 			conn.on('data', (data) => {this.receive(data)});
 			conn.serialization = 'json';
 			this._connections.set(conn.peer, conn);
+			conn.send({type:"sync", project: paper.project.exportJSON()});
 		});
 	}
 
@@ -45,8 +46,14 @@
 	}
 
 	receive(data){
-		let tool = this._tools[data['tool']];
-		tool.peerAction(data);
+		if(data['type'] == 'action'){
+			let tool = this._tools[data['tool']];
+			tool.peerAction(data);
+		}
+		else{
+			paper.project.importJSON(data['project']);
+			console.log(paper);
+		}
 	}
 
 	addCallBacks(name, tool){

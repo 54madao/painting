@@ -15,7 +15,8 @@ export default class Pen{
 				tool: this._toolName,
 				name: this._path.name,
 				action: "onMouseDrag",
-				point: event.point
+				point: event.point,
+				type: 'action'
 			}
 			conn.send(data);
 		}
@@ -46,7 +47,8 @@ export default class Pen{
 			tool: this._toolName,
 			name: this._path.name,
 			action: "onMouseDown",
-			point: event.point
+			point: event.point,
+			type: 'action'
 		}
 		conn.send(data);
 	}

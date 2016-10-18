@@ -8267,6 +8267,8 @@
 			elems['canvas'].on('drop', function (event) {
 				return _this.handleDrop(event);
 			});
+
+			console.log(paper);
 		}
 
 		_createClass(Paint, [{
@@ -23095,7 +23097,8 @@
 					tool: _this._toolName,
 					name: _this._path.name,
 					action: "onMouseDrag",
-					point: event.point
+					point: event.point,
+					type: 'action'
 				};
 				_connect2.default.send(data);
 			};
@@ -23128,7 +23131,8 @@
 					tool: this._toolName,
 					name: this._path.name,
 					action: "onMouseDown",
-					point: event.point
+					point: event.point,
+					type: 'action'
 				};
 				_connect2.default.send(data);
 			}
@@ -23361,7 +23365,7 @@
 /* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	/* WEBPACK VAR INJECTION */(function($, paper) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -23429,6 +23433,7 @@
 					});
 					conn.serialization = 'json';
 					_this3._connections.set(conn.peer, conn);
+					conn.send({ type: "sync", project: paper.project.exportJSON() });
 				});
 			}
 		}, {
@@ -23467,8 +23472,12 @@
 		}, {
 			key: 'receive',
 			value: function receive(data) {
-				var tool = this._tools[data['tool']];
-				tool.peerAction(data);
+				if (data['type'] == 'action') {
+					var tool = this._tools[data['tool']];
+					tool.peerAction(data);
+				} else {
+					paper.project.importJSON(data['project']);
+				}
 			}
 		}, {
 			key: 'addCallBacks',
@@ -23491,7 +23500,7 @@
 	}())();
 
 	exports.default = conn;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(301)))
 
 /***/ },
 /* 308 */

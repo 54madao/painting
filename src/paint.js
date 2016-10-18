@@ -23,6 +23,8 @@ export default class Paint{
 
 		elems['canvas'].on('dragover', (event) => this.handleDragOver(event));
 		elems['canvas'].on('drop', (event) => this.handleDrop(event));
+
+		console.log(paper);
 	}
 
 
